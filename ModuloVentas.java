@@ -7,12 +7,13 @@ public class ModuloVentas {
     //PARTE 1
 
         // Constantes
-        final int PRODUCTO_BASICO = 15000;
-        final int PRODUCTO_MEDIO = 30000;
-        final int PRODUCTO_PREMIUM = 50000;
+        final double PRODUCTO_BASICO = 15000.0;
+        final double PRODUCTO_MEDIO = 30000.0;
+        final double PRODUCTO_PREMIUM = 50000.0;
+        final double PORCENTAJE_IVA = 0.19;
         
         // Variables
-        int totalAcumulado = 0;
+        double totalAcumulado = 0;
         int totalProductos = 0;
         int totalProductosPremium = 0;
         int opcion = 0;
@@ -67,8 +68,44 @@ public class ModuloVentas {
 
         } while (opcion != 4);
 
-        System.out.println("¡Gracias por su compra!");
+        // Condición en caso de no haber productos seleccionados y así evitar la división por cero
+        if (totalProductos == 0) {
+            System.out.println("\nNo se registraron productos en esta transacción. ¡Gracias por su visita!");
+        } else {
+            
+            // Calculo de porcentaje de prendas premium
+            double porcentajePremium = ((double) totalProductosPremium / totalProductos) * 100;
 
+            // Cálculos de descuento e impuestos
+            double descuento = 0;
+            
+            if (totalAcumulado > 100000) {
+                descuento = totalAcumulado * 0.10;
+            }
+
+            double subtotalConDescuento = totalAcumulado - descuento;
+            double iva = subtotalConDescuento * PORCENTAJE_IVA;
+            double totalPagar = subtotalConDescuento + iva;
+
+
+            // Factura Final
+            System.out.println("\n========================================");
+            System.out.println("             FACTURA DE VENTA            ");
+            System.out.println("========================================");
+            System.out.println("\nTotal de artículos comprados: " + totalProductos);
+            System.out.println("Porcentaje de artículos Premium: " + String.format("%.1f", porcentajePremium) + "% \n----------------------------------------\n");
+            System.out.println("Total parcial :               $" + totalAcumulado);
+
+            if (totalAcumulado > 100000){
+                System.out.println("Descuento (10%):              $ " + descuento);
+            }
+            System.out.println("----------------------------------------\nSubtotal:                     $" + subtotalConDescuento);
+            System.out.println("IVA (19%):                    $ " + iva);
+            System.out.println("\n---------------------------------------- \nTOTAL A PAGAR:                $" + totalPagar + "\n----------------------------------------");
+            System.out.println("\n¡Gracias por su compra! \n¡Que tenga un excelente día!\n");
+        }
+
+        sc.close();
     }
     
 }
